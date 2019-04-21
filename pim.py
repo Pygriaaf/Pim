@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#codig=utf-8
+# -*- coding: UTF-8 -*-
 
 import os
 import sys
@@ -22,10 +22,12 @@ while True:
                 break
             fileLine_List = []
             file_line = fileopen.readline()
+            file_line = file_line[:-1]
             fileLine_List.append(file_line)
             try:
                 while True:
                     file_line = fileopen.next()
+                    file_line = file_line[:-2]
                     fileLine_List.append(file_line)
             except:
                 pass
