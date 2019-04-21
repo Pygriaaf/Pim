@@ -21,6 +21,7 @@ while True:
                 print"!pim:FileError:Can't open!" #抛出错误
                 break
             fileLine_List = []
+            fileInfo_List = []
             file_line = fileopen.readline()
             file_line = file_line[:-1]
             fileLine_List.append(file_line)
@@ -34,6 +35,9 @@ while True:
             '''
             将文件存入数据库
             '''
-            print fileLine_List
+            fileInfo_List.append(fileLine_List)
+            fileInfo_List.append(command[1])
+            fileInfo_List.append(int("1"))
+            print fileInfo_List
         if command_List[0] == "exit":
             sys.exit()
