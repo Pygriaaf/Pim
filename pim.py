@@ -16,12 +16,12 @@ while True:
         file_Name = None
         file_Name = command_List[-1].split("\\")[-1]
         if file_Name in file_Data: #判断是否存在文件
-            print"!pim:SystemError:This file already exists!" #抛出错误
+            print"!pim:Error:This file already exists!" #抛出错误
             continue
         try:
             fileopen = open(command_List[1],'r') #打开文件
         except:
-            print"!pim:FileError:Can't open!" #抛出错误
+            print"!pim:Error:Can't open!" #抛出错误
             continue
         file_Status = file_Name
         fileLine_List = []
@@ -49,8 +49,27 @@ while True:
             pass
         else:
             pass
+    if command_List[0] == "see":
+        if command_List[1] == "-n":
+            i = 1
+            #n = len(str(file_Data[file_Status][0]))-len(str(i))-3
+            #print n
+            k = " "*(len(str(len(file_Data[file_Status][0])))-len(str(i)))
+            for line_for in file_Data[file_Status][0]:
+                j = " "*(len(str(len(file_Data[file_Status][0])))-len(str(i)))
+                print"[%s]%s|%s"%(i,j,line_for)
+                i += 1
+        if command_List[1] == "-l":
+            if command_List[2].isdigit():
+                print"!pim:Error:The parameter has an error!"
+            print "[%s]|%s"%(command_List[2],file_Data[file_Status][0][command_List[2]])
+    if command_List[0] == "chfi":
+        if command_List[1] not in file_Data:
+            print"!pim:Error:This file could not be found!"
+            continue
+        file_Status = command_List[1]
     if command_List[0] == "exit":
         sys.exit()
     if command_List[0] == "again": #重新启动,方便开发用
-        os.system("python C:\\Users\\user\\Pim\\pim.py ")
+        os.system("python C:\\Users\\user\\Pim\\pim.py")
         sys.exit()
