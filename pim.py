@@ -44,32 +44,76 @@ while True:
         fileInfo_List.append(command_List[1])
         fileInfo_List.append("1")
         file_Data[file_Name] = fileInfo_List
-    if command_List[0] == "write":
-        if command_List[1] == "-m":
-            pass
-        else:
-            pass
     if command_List[0] == "see":
+        if file_Status == "No files":
+            print"!pim:Error:No file!"
+            continue
         if command_List[1] == "-n":
             i = 1
-            #n = len(str(file_Data[file_Status][0]))-len(str(i))-3
-            #print n
-            k = " "*(len(str(len(file_Data[file_Status][0])))-len(str(i)))
             for line_for in file_Data[file_Status][0]:
-                j = " "*(len(str(len(file_Data[file_Status][0])))-len(str(i)))
-                print"[%s]%s|%s"%(i,j,line_for)
+                j = " "*(len(str(len(file_Data[file_Status][0])))-len(str(i))) #循环打印出文件内容
+                print"%s[%s]|%s"%(j,i,line_for)
                 i += 1
+            continue
         if command_List[1] == "-l":
-            if command_List[2].isdigit():
+            if type(eval(command_List[2])) != int:
                 print"!pim:Error:The parameter has an error!"
-            print "[%s]|%s"%(command_List[2],file_Data[file_Status][0][command_List[2]])
+                continue
+            print "[%s]|%s"%(str(command_List[2]),str(file_Data[file_Status][0][int(command_List[2])-1])) #打印出某一行内容
+            continue
+        if command_List[1] not in file_Data:
+                print"!pim:Error:This file could not be found!"
+                continue
+        else:
+            i = 1
+            for line_for in file_Data[file_Status][0]:
+                j = " "*len(str(len(file_Data[command_List[1]][0])))-len(str(i))
+                print"%s[%s]|%s"%(j,i,line_for)
+                i += 1
     if command_List[0] == "chfi":
+        if file_Status == "No files":
+            print"!pim:Error:No file!"
+            continue
         if command_List[1] not in file_Data:
             print"!pim:Error:This file could not be found!"
             continue
         file_Status = command_List[1]
-    if command_List[0] == "exit":
-        sys.exit()
+    if command_List[0] == "write":
+        if file_Status == "No files":
+            print"!pim:Error:No file!"
+            continue
+        if command_List[1] == "-m":
+            if type(eval(command_List[2])) != int:
+                print"!pim:Error:The parameter has an error!"
+                continue
+            write_M_input = raw_input("m*pim@%s>:"%(file_Status,))
+            file_Data[file_Status][0][int(command_List[2])-1] = write_M_input
+            continue
+        if command_List[1] == "-nl":
+            if type(eval(command_List[2])) != int:
+                print"!pim:Error:The parameter has an error!"
+                continue
+            file_Data[file_Status][0].insert(int(command_List[2]),"")
+            continue
+        if command_List[1] == "-dl":
+            if type(eval(command_List[2])) != int:
+                print"!pim:Error:The parameter has an error!"
+                continue
+            file_Data[file_Status][0].pop(int(command_List[2])-1)
+            continue
+        if type(eval(command_List[1])) != int:
+                print"!pim:Error:The parameter has an error!"
+                continue
+        #write_input = raw_input(w*pim@)
+        if file_Data[file_Status][0][int(command_List[1]-1)] != "": #<--这边有错误
+            print"!pim:Error:There is text in the line and cannot be written!"
+            continue
+        write_input = raw_input("w*pim@%s>:"%(file_Status,))
+        file_Data[file_Status][0][int(command_List[1])] = write_input
+        continue
+
+        if command_List[0] == "exit":
+            exit()
     if command_List[0] == "again": #重新启动,方便开发用
         os.system("python C:\\Users\\user\\Pim\\pim.py")
-        sys.exit()
+        exit()
