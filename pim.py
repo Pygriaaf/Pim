@@ -147,7 +147,7 @@ while True:
         else:
             i = 1
             for line_for in file_Data[file_Status][0]:
-                j = " "*(len(str(len(file_Data[command_List[1]][0])))-len(str(i))) #与"-n"类似#<--报错
+                j = " "*(len(str(len(file_Data[command_List[1]][0])))-len(str(i))) #与"-n"类似
                 print"%s[%s]|%s"%(j,i,line_for)
                 i += 1
 
