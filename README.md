@@ -36,9 +36,9 @@
 提示符:`命令状态*pim@~>:`
 >命令状态:
 >
->w(普通编辑)
+>`w`(普通编辑)
 >
->m(修改编辑)
+>`m`(修改编辑)
 
 例:
 
@@ -51,16 +51,96 @@
 例:
 
 	!pim:Error:This files could not be found!
-#### **三、命令**
-### **6.编辑文本**
-命令:`write <-m><-nl><dl> [行号]`
->"-m":修改编辑
->
->"-nl":创建行
->
->"-dl":新建行
->
->注:无格外参数时为普通编辑
+### **三、命令**
+#### **1.新建文件** ##
+命令:`new [要创建的文件的路径]`
 
 例:
 
+	$pim@No Files>:new C:\test.txt
+	$pim@test.txt>:
+#### **2.打开文件** ####
+命令:`open [要打开文件的路径]`
+
+例:
+
+	$pim@No Files>:open C:\test.txt
+	$pim@test.txt>:
+#### **3.保存文件** ####
+命令:`save [-n] [文件名]`
+>`-n`:保存当前文件
+>
+>注：`save`后面只能使用一个参数。
+
+例:
+
+	$pim@test.txt>:save -n
+	$pim@test.txt>:save test.py
+#### **4.关闭文件** ####
+命令:`close [文件名]·
+>注:
+>
+>* 当关闭了工作文件时，文件状态会变为`No Work_Files`
+>
+>* 当所有文件全部关闭时，文件状态为`No Files`
+>
+>* 想要关闭文件，必须使文件保存。
+
+例:
+
+	$pim@test.txt>:close test.py
+	$pim@test.txt>:close -n
+	$pim@No Work_Files>:close test.md
+	$pim@No Files>:
+#### **5.切换工作文件** ##
+命令:`chfi [文件名]`
+
+例:
+
+	$pim@test.txt>:chfi test.py
+	$pim@test.py>:
+>注:
+>
+>当文件状态为"No Work_Files"时就要用`chfi`命令
+>
+>如:
+>
+>     $pim@No Work_Files>:chif test.py
+>     $pim@test.py>:
+
+#### **6.编辑文本**
+命令:`write <-m> <-nl> <dl> [行号]`
+>`-m`:修改编辑
+>
+>`-nl`:创建行
+>
+>`-dl`:新建行
+>
+>注:无格外参数时为普通编辑，普通编辑只能在空行里使用
+
+例:
+
+	$pim@test.txt>:write 1
+	w*pim@test.txt>:Hello World!
+	$pim@test.txt>:write -m 1
+	m*pim@test.txt>:Hello Pim!
+#### **7.查看文件** ####
+命令:`see <-n> <-l 行号> [文件名]`
+>`-n`:查看当前文件内容
+>
+>`-l`:查看某一行
+
+例:
+
+	$pim@test.txt>:see -n
+	[1]|Hello World!
+	[2]|Hello Pim!
+	$pim@test.txt>:see -l 2
+	[2]|Hello Pim!
+	$pim@test.txt>:see test.py
+	[1]|#!/usr/bin/python
+	[2]|#coding=utf-8
+	[3]|
+	[4]|print"Hello World!"
+	$pim@test.txt>:
+***
