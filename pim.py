@@ -3,40 +3,49 @@
 
 import os
 import sys
-
+os.system("")
 file_Status = "No Files"
 file_Data = {} #创建文件数据库
 print"***************************************"
 print"* Pim.                                *"
 print"* 2019                                *"
 print"* https://www.github.com/Pygriaaf/Pim *"
-print"* Debug0.1                            *"
+print"* Debug0.1.1                           *"
 print"***************************************\n"
+
 while True:
     if not file_Data: #判断文件数据库里是否存在文件
         file_Status = "No Files"
-    command = raw_input("$pim@%s>:"%(file_Status,))
+    if file_Status in ["No Files","No Work_Files"]:
+        command = raw_input("\033[1;32m$\033[0;35mpim\033[0;36m@\033[1;31m%s\033[0;37m>:\033[0m"%(file_Status,))
+    else:
+        command = raw_input("\033[1;32m$\033[0;35mpim\033[0;36m@\033[1;33m%s\033[0;37m>:\033[0m"%(file_Status,))
     command_List = command.split() #解析命令
     if not command_List: #当不输入命令时直接跳过
         continue
     if command_List[0] == "new":
-        try:
+        if len(command_List) == 1:
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mNo parameters or options!\033[0m"
+            continue
+        try: #判断文件是否存在
             a = open(command_List[1],'r')
             a.close()
         except:
             pass
         else:
-            print"!pim:Error:File already exists!"
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mFile already exists!\033[0m"
             continue
         file_Name = command_List[1].split("\\")[-1]
         if file_Name in file_Data:
-            print"!pim:Error:This file already exists!"
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mThis file already exists im Pim!\033[0m"
             continue
         try:
             mkfile = open(command_List[1],'w')
-            mkfile.close()
         except:
-            print"!pim:Error:Failed to create file! Please try again."
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mFailed to create file! Please try again.\033[0m"
+            continue
+        mkfile.write("\n")
+        mkfile.close()
         fileInfo_List = []
         fileInfo_List.append([""]) #这里加一行是为了方便编辑
         fileInfo_List.append(command[1])
@@ -45,14 +54,17 @@ while True:
         file_Status = file_Name
 
     elif command_List[0] == "open":
+        if len(command_List) == 1:
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mNo parameters or options!\033[0m"
+            continue
         file_Name = command_List[1].split("\\")[-1] 
         if file_Name in file_Data: #判断是否存在文件
-            print"!pim:Error:This file already exists!" #抛出错误
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mThis file already exists!\033[0m" #抛出错误
             continue
         try:
             fileopen = open(command_List[1],'r') #打开文件
         except:
-            print"!pim:Error:Can't open!" #抛出错误
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mCan't open!\033[0m" #抛出错误
             continue
         file_Status = file_Name
         fileLine_List = []
@@ -70,17 +82,23 @@ while True:
         fileopen.close()
 
     elif command_List[0] == "save":
+        if len(command_List) == 1:
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mNo parameters or options!\033[0m"
+            continue
         if file_Status == "No Files": #判断文件状态
-            print"!pim:Error:No file!"
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mNo file!\033[0m"
             continue
         if command_List == "-n":
+            if len(command_List) == 3:
+                print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mHave extra parameters!\033[0m"
+                continue
             if file_Status == "No Work_Files":
-                print"!pim:Error:No working file!:"
+                print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mNo working file!\033[0m"
                 continue
             try:
                 filesave_Open = open(file_Data[file_Status][1],'w')
             except:
-                print"!pim:Error:An error occurred while processing the file!"
+                print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mAn error occurred while processing the file!\033[0m"
                 continue
             fileinfo = ""
             for file_line in file_Data[file_Status][0]: #将文件数据库里的文本按一定格式变为字符串
@@ -90,11 +108,13 @@ while True:
             filesave_Open.close()
             file_Data[file_Status][2] = "1"
             filesave_Open.close()
-        #print file_Data[command_List[1]][1]
+        else:
+            print""
+            continue
         try:
             filesave_Open = open(file_Data[file_Status][1],'w')
         except:
-            print"!pim:Error:An error occurred while processing the file!"
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mAn error occurred while processing the file!\033[0m"
             continue
         fileinfo = ""
         for file_line in file_Data[file_Status][0]: #将文件数据库里的文本按一定格式变为字符串
@@ -106,22 +126,31 @@ while True:
         filesave_Open.close()
 
     elif command_List[0] == "close":
+        if len(command_List) == 1:
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mNo parameters or options!\033[0m"
+            continue
         if command_List[1] not in file_Data:
-            print"!pim:Error:This file could not be found!"
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mThis file could not be found!\033[0m"
             continue
         if file_Data[command_List[1]][2] == "0":
-            print"!pim:Error:The file was not saved! Please save!"
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mThe file was not saved! Please save!\033[0m"
             continue
         del file_Data[command_List[1]]
         file_Status = "No Work_Files"
 
     elif command_List[0] == "see":
+        if len(command_List) == 1:
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mNo parameters or options!\033[0m"
+            continue
         if file_Status == "No Files": #判断文件状态
-            print"!pim:Error:No file!"
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mNo file!\033[0m"
             continue
         if command_List[1] == "-n":
+            if len(command_List) != 2:
+                print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mHave extra parameters!\033[0m"
+                continue
             if file_Status == "No Work_Files":
-                print"!pim:Error:No working file!:"
+                print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mNo working file!\033[0m"
                 continue
             i = 1
             for line_for in file_Data[file_Status][0]:
@@ -129,17 +158,20 @@ while True:
                 print"%s[%s]|%s"%(j,i,line_for)
                 i += 1
             continue
-        if command_List[1] == "-l":
+        elif command_List[1] == "-l":
+            if len(command_List) != 3:
+                print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mHave extra parameters!\033[0m"
+                continue
             if file_Status == "No Work_Files":
                 print"!pim:Error:No working file!:"
-            try:
-                if type(eval(command_List[2])) != int:
-                    print"!pim:Error:The parameter has an error!"
-                    continue
-            except:
-                print"!pim:Error:The parameters are incorrect! Please check the parameters."
+                continue
+            if type(eval(command_List[2])) != int:
+                print"!pim:Error:The parameter has an error!"
                 continue
             print "[%s]|%s"%(str(command_List[2]),str(file_Data[file_Status][0][int(command_List[2])-1])) #打印出某一行内容
+            continue
+        else:
+            print""
             continue
         if command_List[1] not in file_Data:
             print"!pim:Error:This file could not be found!"
@@ -152,6 +184,9 @@ while True:
                 i += 1
 
     elif command_List[0] == "chfi":
+        if len(command_List) == 1:
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mNo parameters or options!\033[0m"
+            continue
         if file_Status == "No Files":
             print"!pim:Error:No file!"
             continue
@@ -161,6 +196,9 @@ while True:
         file_Status = command_List[1]
 
     elif command_List[0] == "write":
+        if len(command_List) == 1:
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mNo parameters or options!\033[0m"
+            continue
         if file_Status == "No Files":
             print"!pim:Error:No file!"
             continue
@@ -168,44 +206,53 @@ while True:
             print"!pim:Error:No working file!:"
             continue
         if command_List[1] == "-m":
-            try:
-                if type(eval(command_List[2])) != int: #判断参数是否正确
-                    print"!pim:Error:The parameter has an error!"
-                    continue
-            except:
-                print"!pim:Error:This file could not be found!"
+            if len(command_List) == 2:
+                print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mHave extra parameters!\033[0m"
+                continue
+            if type(eval(command_List[2])) != int: #判断参数是否正确
+                print"!pim:Error:The parameter has an error!"
+                continue
             write_M_input = raw_input("m*pim@%s>:"%(file_Status,)) #输入文本
             file_Data[file_Status][0][int(command_List[2])-1] = write_M_input
             file_Data[file_Status][2] = "0" #修改文件保存状态
             continue
-        if command_List[1] == "-nl":
-            try:
-                if type(eval(command_List[2])) != int:
-                    print"!pim:Error:The parameter has an error!"
-                    continue
-            except:
-                print"!pim:Error:This file could not be found!"
+        elif command_List[1] == "-nul":
+            if len(command_List) > 3:
+                print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mHave extra parameters!\033[0m"
+                continue
+            if type(eval(command_List[2])) != int:
+                print"!pim:Error:The parameter has an error!"
+                continue
+            file_Data[file_Status][0].insert(int(command_List[2])-1,"") #添加空行
+            file_Data[file_Status][2] = "0"
+            continue
+        elif command_List[1] == "-ndl":
+            if len(command_List) > 3:
+                print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mHave extra parameters!\033[0m"
+                continue
+            if type(eval(command_List[2])) != int:
+                print"!pim:Error:The parameter has an error!"
+                continue
             file_Data[file_Status][0].insert(int(command_List[2]),"") #添加空行
             file_Data[file_Status][2] = "0"
             continue
-        if command_List[1] == "-dl":
-            try:
-                if type(eval(command_List[2])) != int:
-                    print"!pim:Error:The parameter has an error!"
-                    continue
-            except:
-                print"!pim:Error:This file could not be found!"
-            file_Data[file_Status][0].pop(int(command_List[2])-1) #删除某一行
-            file_Data[file_Status][2] = "0"
-            continue
-        try:
-            if type(eval(command_List[1])) != int:
+        elif command_List[1] == "-dsl":
+            if len(command_List) != 3:
+                print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mHave extra parameters!\033[0m"
+                continue
+            if type(eval(command_List[2])) != int:
                 print"!pim:Error:The parameter has an error!"
                 continue
-        except:
-            print"!pim:Error:This file could not be found!"
-        if file_Data[file_Status][0][int(command_List[1])-1] != "":
-            print"!pim:Error:There is text in the line and cannot be written!"
+            file_Data[file_Status][0].pop(int(command_List[2])) #删除某一行
+            file_Data[file_Status][2] = "0"
+            continue
+        elif command_List[1] == "-dml":
+            if len(command_List) != 4:
+                print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mHave extra parameters!\033[0m"
+                continue
+            del file_Data[file_Status][0][int(command_List[2])-1:int(command_List(3))-1]
+        if len(command_List) != 2:
+            print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mHave extra parameters!\033[0m"
             continue
         write_input = raw_input("w*pim@%s>:"%(file_Status,))
         file_Data[file_Status][0][int(command_List[1])-1] = write_input
@@ -220,5 +267,5 @@ while True:
         exit()
 
     else:
-        print"!pim:Error:This command could not be found!"
+        print"\033[1;31m!\033[0;35mpim:\033[1;31mError:\033[1;37;41mThis command could not be found!\033[0m"
         continue
