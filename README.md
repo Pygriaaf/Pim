@@ -51,6 +51,15 @@
 例:
 
 	!pim:Error:This files could not be found!
+#### **4.选择情况下** ####
+提示符`?pim:命令名:详细信息(Y/N)`
+>注:然后会出现一个`>`符,让用户输入"Y"或"N"(不分大小写)。
+
+例:
+
+	?pim:close:Some files are not saved, do you need to save them?(Y/N)
+	>Y
+	$pim@No Files>:
 ### **三、命令**
 #### **1.新建文件** ##
 命令:`new [要创建的文件的路径]`
